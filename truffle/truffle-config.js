@@ -25,6 +25,16 @@
 // const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
+
+  // resolve: {
+  //     fallback: {
+  //       crypto: require.resolve('crypto-browserify'),
+  //       stream: require.resolve('stream-browserify'),
+  //       http: require.resolve('stream-http'),
+  //       https: require.resolve('https-browserify'),
+  //       os: require.resolve('os-browserify')
+  //     },
+  // },
   /**
    * Networks define how you connect to your ethereum client and let you set the
    * defaults web3 uses to send transactions. If you don't specify one truffle
