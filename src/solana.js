@@ -16,7 +16,7 @@ export async function setup() {
     })
 }
 
-  export async function burnToken(token) {
+  export async function burnToken(token, upateProgress) {
     let recentBlockhash = await connection.getRecentBlockhash()
     let tx = new Transaction({ recentBlockhash: recentBlockhash.blockhash, feePayer: wallet.publicKey }).add(
         Token.createBurnInstruction(
@@ -36,11 +36,14 @@ export async function setup() {
     )
       
     const {signature} = await window.solana.signAndSendTransaction(tx)
-    return (await connection.confirmTransaction(signature)).value.err
+    updateProgress('Burning Token')
+    let err = (await connection.confirmTransaction(signature)).value.err
+    updateProgress('Burnt Token')
+    return err
 }
   
   
-  export async function mint(token) {
+  export async function mint(token, updateProgress) {
     let res = await fetch('http://localhost:8000/transaction', {
         method: 'POST',
         headers: {
@@ -53,5 +56,8 @@ export async function setup() {
     let transaction = Transaction.from(Uint8Array.from(serializedTransaction))
     await window.solana.signTransaction(transaction)
     let signature = await connection.sendRawTransaction(transaction.serialize())
-    return (await connection.confirmTransaction(signature)).value.err
+    updateProgress('Minting Token')
+    let err = (await connection.confirmTransaction(signature)).value.err
+    updateProgress('Finished Minting')
+    return err
 }
