@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/truffle/node_modules
+
 /.pnp
 .pnp.js
 

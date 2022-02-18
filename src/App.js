@@ -2,21 +2,65 @@ import './App.css';
 import ScriptTag from 'react-script-tag';
 import { useEffect } from 'react';
 import Web3 from 'web3';
+import Net from 'web3-net';
+import jQuery from 'jquery';
 
 function App() {
-    const providerURL = "http://127.0.0.1:7545"
-    useEffect(() => {
-        const web3 = new Web3(providerURL)
-        let provider = window.ethereum;
-        if (typeof provider !== 'undefined') {
-            provider.request({ method: "eth_requestAccounts" }).then(accounts => {
-                console.log(accounts);
-            }).catch((err) => {
-                console.log(err)
-            })
-        }
+    const getWeb3 = () => {
+        return new Promise((resolve, reject) => {
+            window.addEventListener("load", async () => {
+            if (window.ethereum) {
+                const web3 = new Web3(window.ethereum);
+                try {
+                await window.ethereum.request({ method: "eth_requestAccounts" });
+                resolve(web3);
+                } catch (error) {
+                reject(error);
+                }
+            } else {
+                reject("Must install MetaMask");
+            }
+            });
+        });
+    };
 
-    },[])
+    (async () => {
+        const web3 = await getWeb3();
+        const data = await jQuery.getJSON("./truffle/build/contracts/ArtCollectible.json");
+        var myContract = new web3.eth.Contract(data.abi, '0x7d9E5aE18D496A014D94355E9De8cEc6BA655B57');
+        document.getElementById("transfer").addEventListener("click", () => {
+            const _Id = document.getElementById("token_input").value;
+            const _tokenURI = "23456789";
+            console.log(myContract);
+            // myContract.methods.burn(_Id).send({from: window.ethereum.selectedAddress});
+            // myContract.methods.claimItem(_tokenURI).send({from: window.ethereum.selectedAddress});
+        })
+    })()
+
+
+    // const getContract = async (web3) => {
+    //     const data = await jQuery.getJSON("./truffle/build/contracts/ArtCollectible.json");
+    //     const net = new Net(window.ethereum);
+    //     const netId = await web3.eth.getId();
+    //     const deployedNetwork = data.networks[netId];
+    //     const artCollectible = new web3.eth.Contract(
+    //         data.abi,
+    //         deployedNetwork && deployedNetwork.address
+    //     );
+    //     return artCollectible;
+    // }; 
+    // const web3 = getWeb3();
+    // getContract(web3)
+
+
+    // async function transferNFT(_to, _tokenId) {
+    //     const web3 = await getWeb3();
+    //     const accounts = await web3.eth.getAccounts();
+    //     const contract = await getContract(web3);
+    //     await contract.methods.burn(_tokenId).send({ from: accounts[0] });
+    //     await contract.methods.burn(_tokenId).send({ from: _to });
+    // }
+
 
   return (
     <div className="App" id="App">
@@ -53,7 +97,7 @@ function App() {
                         <input type="address" className="address_input" placeholder="address..." />
                     </div>
                     <div className="input_ether">
-                        <input type="tokan" className="tokan_input" placeholder="tokan..." />
+                        <input type="tokan" id="token_input" className="tokan_input" placeholder="tokan..." />
                     </div>
                 </div>
                 <p className="tag">To:</p>
@@ -81,7 +125,7 @@ function App() {
                 </div>
             </div>
             <p className = "Text ">Transaction is Secure and Encrypted</p>
-            <a href="#" className ="button" id="transfer">Transfer</a>
+            <div className ="button" id="transfer">Transfer</div>
         </div>
           </div>
           <ScriptTag src='animation.js'/>
