@@ -16,7 +16,7 @@ export async function setup() {
     })
 }
 
-  export async function burnToken(token, upateProgress) {
+  export async function burnToken(token, updateProgress) {
     let recentBlockhash = await connection.getRecentBlockhash()
     let tx = new Transaction({ recentBlockhash: recentBlockhash.blockhash, feePayer: wallet.publicKey }).add(
         Token.createBurnInstruction(
