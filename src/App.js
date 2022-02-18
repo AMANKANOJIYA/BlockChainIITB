@@ -2,18 +2,16 @@ import './App.css';
 import ScriptTag from 'react-script-tag';
 import { useEffect, useState} from 'react';
 import Web3 from 'web3';
-import Net from 'web3-net';
 import jQuery from 'jquery';
 import NftList from './components/NftList';
 import Modal from './components/Modal';
 
 function App() {
-    const [data, setData] = useState({assets:[]});
-    useEffect(async () => {
-        let response = await fetch("https://rinkeby-api.opensea.io/api/v1/assets?owner=0xc06fc11fe6500cf8ef3072bffa1568c0d7fe7784")
-        const tempData = await response.json();
-        setData(tempData);
-    }, []);
+    const [modalData, setModalData] = useState({ enabled: false, nft: {} });
+
+    function setNFT(nft) {
+        setModalData({...modalData, nft: nft})
+    }
     
     const getWeb3 = () => {
     return new Promise((resolve, reject) => {
@@ -47,7 +45,7 @@ function App() {
 
   return (
       <div className="App" id="App">
-          <Modal/>
+          <Modal data={modalData} />
       <div className="mainContainor">
         <div className="left block_in">
             <div className="contentLeft">
@@ -67,7 +65,7 @@ function App() {
                         </div>
                     </div>
                     <div className="input_ether elementInput">
-                        <NftList arr = {data.assets}/>
+                        <NftList setModalData={setNFT} />
                     </div>
                 </div>
                 <p className="tag">To:</p>
@@ -78,8 +76,7 @@ function App() {
                           </select>
                 </div>
             </div>
-            {/* <p className = "Text ">Transaction is Secure and Encrypted</p> */}
-            <div className ="button" id="transfer">Transfer</div>
+            <div className ="button" id="transfer" onClick={() => setModalData({ ...modalData, enabled: true })}>Transfer</div>
         </div>
           </div>
           <ScriptTag src='animation.js'/>

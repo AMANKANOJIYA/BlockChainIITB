@@ -306,3 +306,22 @@ input:active{
     top: 50%;
     transform: translate(-50%,-50%);
 }
+
+
+.innerModal {
+    padding: 40px;
+}
+
+.modal__section.horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.modal__section img {
+    width: 200px;
+}
+
+.modal__title {
+    padding: 20px 40px;
+    font-size: 28px;
+}
