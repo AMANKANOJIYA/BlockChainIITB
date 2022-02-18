@@ -1,9 +1,19 @@
-import { assert } from 'console';
 import React, { useState} from 'react'
 
 
 function Modal(props) {
-    console.log(props)
+    const [progress, setProgress] = useState({
+        text: 'Starting to Bridge',
+        progress: 0
+    });
+
+    function updateProgress(text) {
+        setProgress({
+            progress: progress.progress + 1,
+            text
+        })
+    }
+
     if ( props.data.enabled ) {
         return (
             <div className='modal'>
@@ -13,9 +23,9 @@ function Modal(props) {
                         <div className='modal__title'>{props.data.nft.name} is being bridged from<br /><b>Ethereum Chain</b> to <b>Solana Chain</b></div>
                     </div>
                     <div className='modal__section'>
-                        <div className='progress-title'>Bridging</div>
+                        <div className='progress-title'>{progress.text}</div>
                         <div className='progress-bar'>
-                            <div className='progress-bar--progress'></div>
+                            <div className='progress-bar--progress' style={{width: `${25*progress.progress}%`}}></div>
                         </div>
                     </div>
                 </div>

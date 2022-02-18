@@ -310,6 +310,9 @@ input:active{
 
 .innerModal {
     padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .modal__section.horizontal {
@@ -324,4 +327,32 @@ input:active{
 .modal__title {
     padding: 20px 40px;
     font-size: 28px;
+}
+
+.progress-title {
+    text-align: center;
+    color: #C200FF;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-size: 18px;
+}
+
+.progress-bar {
+    background: #f1c3ff;
+    height: 26px;
+    border: solid 2px #C200FF;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar--progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    background: #C200FF;
+    transition: all 0.4s;
 }
